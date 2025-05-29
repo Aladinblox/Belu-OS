@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belu OS - Technical Specification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5 {
+            color: #333;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2em; border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+        h2 { font-size: 1.75em; border-bottom: 1px solid #eee; padding-bottom: 0.2em; }
+        h3 { font-size: 1.5em; }
+        h4 { font-size: 1.25em; }
+        p {
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9em;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #e0e0e0;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .section:last-child {
+            border-bottom: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Belu OS - Technical Specification</h1>
+
+        <div class="section" id="introduction">
+            <h2>1. Introduction</h2>
+            <p>Belu OS is envisioned as an innovative, educational, and visually engaging web-based operating system proof-of-concept (POC). Its core design philosophy revolves around creating an interactive and intuitive user experience, primarily leveraging 3D animations and modern web technologies. The primary goal is to explore the possibilities of a browser-rendered OS environment, focusing on conceptual module interactions and user interface paradigms rather than full-fledged OS capabilities.</p>
+            <p>Key features of Belu OS include a modular architecture with distinct applications like a File Explorer, Personal Digital Assistant (PDA), Paint Application, Web Browser, and an App Store, all operating within a simulated desktop environment. The emphasis is on demonstrating how these components interact conceptually, supported by a 3D animated framework to enhance user engagement and provide a unique aesthetic. As a POC, it will operate with mock data and simulated functionalities, providing a blueprint for potential future development in web-based OS environments and interactive educational tools.</p>
+        </div>
+
+        <div class="section" id="architecture">
+            <h2>2. Architecture Diagram</h2>
+            <p>The following provides a textual description of the conceptual architecture for Belu OS. A visual SVG diagram would typically be presented here in a full specification document.</p>
+            <p><strong>Core Components and Interactions:</strong></p>
+            <ul>
+                <li><strong>Belu OS Core:</strong>
+                    <ul>
+                        <li>Manages the main event loop, window management (conceptual), and inter-module communication.</li>
+                        <li>Interfaces with the 3D Animation Framework for UI rendering and effects.</li>
+                        <li>Handles global state and settings.</li>
+                    </ul>
+                </li>
+                <li><strong>3D Animation Framework (e.g., Three.js wrapper):</strong>
+                    <ul>
+                        <li>Renders the overall 3D desktop environment, windows, and animated transitions.</li>
+                        <li>Provides APIs for modules to request 3D elements or animations.</li>
+                    </ul>
+                </li>
+                <li><strong>Application Modules (each running as a conceptual "process"):</strong>
+                    <ul>
+                        <li><strong>File Explorer:</strong> Interacts with mock file system data. Communicates with OS Core to open files (triggering other modules).</li>
+                        <li><strong>PDA (Calendar, Contacts, Tasks):</strong> Manages its own mock data. UI rendered by OS Core/3D Framework.</li>
+                        <li><strong>Paint Application:</strong> Uses an HTML5 Canvas, managed within a window. Conceptual save/load via OS Core.</li>
+                        <li><strong>Web Browser:</strong> Renders simplified HTML content (mock pages). Navigation and tab history managed internally.</li>
+                        <li><strong>App Store:</strong> Manages a list of mock applications. "Installation" signals OS Core to register an app.</li>
+                    </ul>
+                </li>
+                <li><strong>Data Management (Conceptual):</strong>
+                    <ul>
+                        <li>Each module primarily manages its own mock data (e.g., JavaScript objects).</li>
+                        <li>No central persistent database in the POC; data is session-based.</li>
+                    </ul>
+                </li>
+                <li><strong>Event Bus / API Layer:</strong>
+                    <ul>
+                        <li>A conceptual system for modules to emit events (e.g., `appInstalled`, `fileOpened`) and call APIs of other modules or the OS Core.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>Interaction Flow Example (Opening a Text File):</strong></p>
+            <ol>
+                <li>User interacts with File Explorer (rendered by 3D Framework).</li>
+                <li>User clicks a "text file" in File Explorer.</li>
+                <li>File Explorer emits `fileOpenRequest` event with file details (mock path/content).</li>
+                <li>OS Core receives event, determines file type is "text".</li>
+                <li>OS Core checks if a Text Editor app is "installed" (via App Store's conceptual data).</li>
+                <li>OS Core instructs Window Manager (part of Core) to open a new window for Text Editor.</li>
+                <li>OS Core launches/activates Text Editor module, passing file content.</li>
+                <li>Text Editor module displays content in its window (rendered by 3D Framework).</li>
+            </ol>
+            <p>This diagram would visually show these components as boxes and the interactions as arrows, indicating data flow and control signals.</p>
+        </div>
+
+        <div class="section" id="core-functionality">
+            <h2>3. Core Functionality Specifications</h2>
+
+            <!-- File Explorer -->
+            <div id="file-explorer-spec">
+                <h3>3.1. File Explorer Module</h3>
+                <p>This document outlines the specifications for the File Explorer module, including its intended functionality, conceptual API interactions, limitations within an HTML proof-of-concept (POC), and hypothetical examples of file structures and actions.</p>
+                <h4>3.1.1. Core Functionality</h4>
+                <p>The File Explorer module aims to provide a user-friendly interface for browsing a hierarchical file system structure.</p>
+                <ul>
+                    <li><strong>Display:</strong>
+                        <ul>
+                            <li>Render a hierarchical list of files and folders.</li>
+                            <li>Clearly distinguish between files and folders (e.g., using icons or textual cues).</li>
+                            <li>Display the names of files and folders.</li>
+                            <li>(Optional for POC) Display basic metadata like file size or last modified date.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Navigation:</strong>
+                        <ul>
+                            <li>Allow users to click on a folder to navigate into it and view its contents.</li>
+                            <li>Provide a mechanism to navigate back to the parent folder (e.g., an "Up" button or breadcrumbs).</li>
+                            <li>(Optional for POC) Display the current path or breadcrumbs for orientation.</li>
+                        </ul>
+                    </li>
+                    <li><strong>File/Folder Actions (Simulated in POC):</strong>
+                        <ul>
+                            <li><strong>Open File:</strong> When a file is clicked, an event should signify an "open" attempt. In a POC, this might trigger displaying mock content or a notification.</li>
+                            <li><strong>Select Item:</strong> Allow a single file or folder to be "selected" (e.g., highlighted) upon clicking.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Conceptual Future Enhancements (Likely out of scope for initial HTML POC):</strong>
+                        <ul>
+                            <li>Create new folder.</li>
+                            <li>Delete a file or folder.</li>
+                            <li>Rename a file or folder.</li>
+                            <li>Search or filter the list of files/folders.</li>
+                            <li>Context menus for more actions.</li>
+                            <li>Drag and drop functionality.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>3.1.2. Conceptual API Interactions</h4>
+                <p>These interactions describe how the File Explorer component might be controlled or interacted with, typically via JavaScript in an HTML context.</p>
+                <ul>
+                    <li><strong><code>fileExplorer.setInitialData(data: Object)</code>:</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> To load the mock file system structure into the explorer.</li>
+                            <li><strong>Input:</strong> <code>data</code> - A JavaScript object representing the entire directory tree.
+                                <p>Example <code>data</code> structure:</p>
+                                <pre><code>
+{
+  "root": {
+    "type": "folder",
+    "children": {
+      "documents": {
+        "type": "folder",
+        "children": {
+          "report.docx": { "type": "file", "size": "12KB" },
+          "notes.txt": { "type": "file", "size": "2KB" }
+        }
+      },
+      "images": {
+        "type": "folder",
+        "children": {
+          "logo.png": { "type": "file", "size": "5KB" }
+        }
+      },
+      "README.md": { "type": "file", "size": "1KB" }
+    }
+  }
+}
+                                </code></pre>
+                            </li>
+                            <li><strong>Action:</strong> Initializes the file explorer to display the root of the provided data.</li>
+                        </ul>
+                    </li>
+                    <li><strong><code>fileExplorer.getCurrentPath(): string</code>:</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> To retrieve the absolute path of the currently displayed directory.</li>
+                            <li><strong>Output:</strong> A string representing the path (e.g., <code>"/documents/work/"</code>).</li>
+                        </ul>
+                    </li>
+                    <li><strong><code>fileExplorer.listDirectory(path: string): Array&lt;Object&gt;</code>:</strong> (Internal or for advanced use)
+                        <ul>
+                            <li><strong>Purpose:</strong> To get the contents of a specific directory path from the loaded data.</li>
+                            <li><strong>Input:</strong> <code>path</code> - The path of the directory to list.</li>
+                            <li><strong>Output:</strong> An array of objects, each representing a file or folder.
+                                <br>Example item: <code>{ name: "MyFile.txt", type: "file", path: "/documents/MyFile.txt" }</code> or <code>{ name: "MyFolder", type: "folder", path: "/documents/MyFolder" }</code>.
+                            </li>
+                            <li><strong>Note:</strong> In the POC, this would query the internal mock data structure.</li>
+                        </ul>
+                    </li>
+                    <li><strong><code>fileExplorer.navigateTo(path: string)</code>:</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> To change the current view to the specified directory path.</li>
+                            <li><strong>Input:</strong> <code>path</code> - The target directory path.</li>
+                            <li><strong>Action:</strong> Updates the explorer's display to show the contents of the new path.</li>
+                        </ul>
+                    </li>
+                    <li><strong><code>fileExplorer.goUp()</code>:</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> To navigate to the parent directory of the current path.</li>
+                            <li><strong>Action:</strong> Updates the explorer's display to show the parent directory's contents. Does nothing if already at the root.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Event: <code>onFileOpen(callback: Function)</code>:</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> To allow external code to react when a user attempts to "open" a file.</li>
+                            <li><strong>Callback Signature:</strong> <code>callback(fileInfo: Object)</code> where <code>fileInfo</code> could be <code>{ name: "report.docx", path: "/documents/report.docx", type: "file" }</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Event: <code>onSelectionChange(callback: Function)</code>:</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> To notify when the selected item (file or folder) changes.</li>
+                            <li><strong>Callback Signature:</strong> <code>callback(selectedItemInfo: Object)</code> where <code>selectedItemInfo</code> provides details of the newly selected item.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>3.1.3. Limitations for HTML Proof-of-Concept (POC)</h4>
+                <ul>
+                    <li><strong>No Real File System Interaction:</strong> The POC will operate on a predefined JavaScript object representing the file system. It will not read from or write to the user's actual disk.</li>
+                    <li><strong>Simulated Operations:</strong>
+                        <ul>
+                            <li>"Opening" a file will not launch external applications. It will trigger an event that the parent application can handle (e.g., by showing mock content or an alert).</li>
+                            <li>Operations like create, delete, or rename will only modify the internal JavaScript data structure and update the view. These changes will be ephemeral and lost on page reload unless explicitly persisted (e.g., using LocalStorage, which is an optional extension).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Performance:</strong> Displaying a very large number of files/folders within a single directory might have performance implications, as it will rely on standard DOM manipulation. Virtualization or pagination are typically out of scope for an initial POC.</li>
+                    <li><strong>Visuals:</strong> May initially lack sophisticated icons for file types, relying on simple visual cues or text.</li>
+                    <li><strong>Advanced Features:</strong> Features like search, filtering, multi-select, context menus, and drag-and-drop will likely be omitted for simplicity in the initial POC.</li>
+                </ul>
+                <h4>3.1.4. Hypothetical File Structure Examples</h4>
+                <p>These illustrate the kind of data the <code>setInitialData</code> method would expect.</p>
+                <p><strong>Example 1: Simple Project Structure</strong> (Represented as the <code>data</code> object for <code>setInitialData</code>)</p>
+                <pre><code>
+{
+  "root": {
+    "type": "folder",
+    "children": {
+      "documents": {
+        "type": "folder",
+        "children": {
+          "report.docx": { "type": "file", "size": "256KB" },
+          "presentation.pptx": { "type": "file", "size": "1.2MB" }
+        }
+      },
+      "images": {
+        "type": "folder",
+        "children": {
+          "logo.png": { "type": "file", "size": "15KB" },
+          "background.jpg": { "type": "file", "size": "450KB" }
+        }
+      },
+      "src": {
+        "type": "folder",
+        "children": {
+          "main.js": { "type": "file", "size": "5KB" },
+          "utils.js": { "type": "file", "size": "2KB" }
+        }
+      },
+      "index.html": { "type": "file", "size": "1KB" },
+      "README.md": { "type": "file", "size": "2KB" }
+    }
+  }
+}
+                </code></pre>
+                <p><strong>Example 2: More Nested Structure</strong></p>
+                <pre><code>
+{
+  "root": {
+    "type": "folder",
+    "children": {
+      "Users": {
+        "type": "folder",
+        "children": {
+          "Alice": {
+            "type": "folder",
+            "children": {
+              "Desktop": {
+                "type": "folder",
+                "children": {
+                  "screenshot.png": { "type": "file", "size": "300KB" }
+                }
+              },
+              "Documents": {
+                "type": "folder",
+                "children": {
+                  "Work": {
+                    "type": "folder",
+                    "children": {
+                      "project_alpha": {
+                        "type": "folder",
+                        "children": {
+                          "plan.txt": { "type": "file", "size": "3KB" }
+                        }
+                      },
+                      "report_final.pdf": { "type": "file", "size": "2.5MB" }
+                    }
+                  },
+                  "Personal": {
+                    "type": "folder",
+                    "children": {
+                      "todo.txt": { "type": "file", "size": "1KB" }
+                    }
+                  }
+                }
+              },
+              "Downloads": {
+                "type": "folder",
+                "children": {
+                  "archive.zip": { "type": "file", "size": "10MB" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "System": {
+        "type": "folder",
+        "children": {
+          "config.sys": { "type": "file", "size": "0.5KB" }
+        }
+      }
+    }
+  }
+}
+                </code></pre>
+                <p><em>(Note: The actual path for an item would be derived by traversing this structure, e.g. "logo.png" is at "/images/logo.png")</em></p>
+                <h4>3.1.5. Action Examples (User Interaction Flow)</h4>
+                <ul>
+                    <li><strong>Initial Load:</strong>
+                        <ol>
+                            <li>Application calls <code>fileExplorer.setInitialData(mockData)</code>.</li>
+                            <li>File explorer renders the root directory (e.g., showing "documents", "images", "src", "index.html", "README.md" from Example 1).</li>
+                            <li><code>fileExplorer.getCurrentPath()</code> returns <code>"/"</code>.</li>
+                        </ol>
+                    </li>
+                    <li><strong>User Clicks on "documents" Folder (from root):</strong>
+                        <ol>
+                            <li>The click event on the "documents" folder item internally calls a function similar to <code>fileExplorer.navigateTo("/documents/")</code>.</li>
+                            <li>The view updates to display the contents of <code>/documents/</code>: <code>report.docx</code> and <code>presentation.pptx</code>.</li>
+                            <li>The <code>onSelectionChange</code> event might be triggered, indicating "documents" was selected.</li>
+                            <li><code>fileExplorer.getCurrentPath()</code> now returns <code>"/documents/"</code>.</li>
+                        </ol>
+                    </li>
+                    <li><strong>User Clicks on "report.docx" File:</strong>
+                        <ol>
+                            <li>The click event on the "report.docx" file item triggers the <code>onFileOpen</code> callback with details like <code>{ name: "report.docx", path: "/documents/report.docx", type: "file" }</code>.</li>
+                            <li>The application listening to this event might then display "Simulating opening report.docx..." or show predefined mock content associated with this file.</li>
+                            <li>"report.docx" is visually highlighted as the selected item, and <code>onSelectionChange</code> is triggered.</li>
+                        </ol>
+                    </li>
+                    <li><strong>User Clicks "Up" Button (while in <code>/documents/Work/project_alpha/</code>):</strong>
+                        <ol>
+                            <li>The click event on the "Up" button calls <code>fileExplorer.goUp()</code>.</li>
+                            <li>The view updates to show the contents of the parent directory, <code>/documents/Work/</code>.</li>
+                            <li><code>fileExplorer.getCurrentPath()</code> now returns <code>"/documents/Work/"</code>.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- PDA Module -->
+            <div id="pda-spec">
+                <h3>3.2. PDA (Personal Digital Assistant) Module</h3>
+                <p>This document outlines the specifications for the PDA module, encompassing its core sub-modules: Calendar, Contacts, and Task Management. It details their intended functionality, conceptual API interactions, limitations within an HTML proof-of-concept (POC), and provides hypothetical example entries for each.</p>
+                <h4>3.2.1. Overall PDA Functionality</h4>
+                <p>The PDA module simulates key features of a Personal Digital Assistant. It aims to provide a user interface for managing:</p>
+                <ul>
+                    <li><strong>Calendar:</strong> Tracking appointments and events.</li>
+                    <li><strong>Contacts:</strong> Storing and retrieving contact information.</li>
+                    <li><strong>Task Management:</strong> Organizing and tracking to-do items.</li>
+                </ul>
+                <p>In an HTML POC, these functionalities will be driven by mock data with simplified user interactions.</p>
+
+                <h4>3.2.2. Sub-module: Calendar</h4>
+                <p>Manages appointments, events, and time-based reminders.</p>
+                <h5>3.2.2.1. Calendar Functionality</h5>
+                <ul>
+                    <li><strong>View Events:</strong>
+                        <ul>
+                            <li>Display events in a monthly calendar grid.</li>
+                            <li>Days with events should be visually indicated on the month view.</li>
+                            <li>Allow selection of a specific day to view its events in a list format.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Navigate Time:</strong>
+                        <ul>
+                            <li>Buttons to move to the next and previous month.</li>
+                            <li>Display the current month and year.</li>
+                        </ul>
+                    </li>
+                    <li><strong>(POC Simulated) Add Event:</strong>
+                        <ul>
+                            <li>Provide a simple form (e.g., inputs for event title, date, time, description).</li>
+                            <li>"Adding" an event updates the internal mock data and refreshes the calendar display.</li>
+                        </ul>
+                    </li>
+                    <li><strong>(POC Simulated) View Event Details:</strong>
+                        <ul>
+                            <li>Clicking an event (either on the day view or a summary in month view) displays its full details.</li>
+                        </ul>
+                    </li>
+                    <li><strong>(Optional for POC) Week View:</strong> A simplified weekly view of events.</li>
+                </ul>
+                <h5>3.2.2.2. Calendar Conceptual API (e.g., <code>pda.calendar</code>)</h5>
+                <ul>
+                    <li><code>setInitialEvents(eventsArray: Array&lt;Object&gt;)</code>: (POC specific) Loads initial mock event data. <code>eventsArray</code> contains event objects.</li>
+                    <li><code>getEventsForMonth(year: number, month: number): Array&lt;Object&gt;</code>: Returns events for the specified month.</li>
+                    <li><code>getEventsForDay(date: string): Array&lt;Object&gt;</code>: Returns events for a specific date (e.g., "YYYY-MM-DD").</li>
+                    <li><code>addEvent(eventData: Object): void</code>: (POC) Adds a mock event to the internal data. <code>eventData</code> includes title, date, time, description.</li>
+                    <li><code>onEventSelect(callback: Function)</code>: Callback triggered when an event is selected. Passes event details to the callback.</li>
+                    <li><code>onDateSelect(callback: Function)</code>: Callback triggered when a date is selected on the calendar. Passes the date to the callback.</li>
+                </ul>
+                <h5>3.2.2.3. Example Calendar Entries</h5>
+                <pre><code>
+[
+  { "id": "evt1", "title": "Team Meeting", "date": "2024-07-15", "time": "10:00", "description": "Discuss project updates for Q3." },
+  { "id": "evt2", "title": "Doctor's Appointment", "date": "2024-07-18", "time": "14:30", "description": "Annual check-up with Dr. Smith." },
+  { "id": "evt3", "title": "Birthday Party", "date": "2024-07-20", "time": "18:00", "description": "John Doe's birthday celebration." },
+  { "id": "evt4", "title": "Lunch with Client", "date": "2024-07-15", "time": "12:30", "description": "Meeting with ACME Corp." }
+]
+                </code></pre>
+
+                <h4>3.2.3. Sub-module: Contacts</h4>
+                <p>Manages a list of personal and professional contacts.</p>
+                <h5>3.2.3.1. Contacts Functionality</h5>
+                <ul>
+                    <li><strong>View Contacts:</strong> Display a list of contacts, showing key information like name, phone number, and email.</li>
+                    <li><strong>View Contact Details:</strong> Clicking a contact in the list displays a detailed view with all stored information (name, phone, email, address, notes).</li>
+                    <li><strong>(POC Simulated) Add Contact:</strong>
+                        <ul>
+                            <li>Provide a simple form for entering contact details.</li>
+                            <li>"Adding" a contact updates internal mock data and refreshes the list.</li>
+                        </ul>
+                    </li>
+                    <li><strong>(POC Basic) Search/Filter:</strong> Basic client-side text search by contact name.</li>
+                    <li><strong>(Optional for POC) Edit Contact:</strong> Allow modification of an existing contact's details.</li>
+                </ul>
+                <h5>3.2.3.2. Contacts Conceptual API (e.g., <code>pda.contacts</code>)</h5>
+                <ul>
+                    <li><code>setInitialContacts(contactsArray: Array&lt;Object&gt;)</code>: (POC specific) Loads initial mock contact data.</li>
+                    <li><code>getAllContacts(): Array&lt;Object&gt;</code>: Returns the full list of contact objects.</li>
+                    <li><code>getContactById(id: string): Object</code>: Retrieves a specific contact by its unique ID.</li>
+                    <li><code>addContact(contactData: Object): void</code>: (POC) Adds a mock contact.</li>
+                    <li><code>searchContacts(searchTerm: string): Array&lt;Object&gt;</code>: (POC) Filters contacts by name.</li>
+                    <li><code>onContactSelect(callback: Function)</code>: Callback triggered when a contact is selected.</li>
+                </ul>
+                <h5>3.2.3.3. Example Contact Entries</h5>
+                <pre><code>
+[
+  { "id": "c1", "name": "Alice Wonderland", "phone": "123-456-7890", "email": "alice@example.com", "address": "123 Fantasy Lane, Storyville", "notes": "Met at the Mad Hatter's tea party." },
+  { "id": "c2", "name": "Bob The Builder", "phone": "234-567-8901", "email": "bob@construction.com", "address": "456 Tool Street, BuildCity", "notes": "Expert in all things construction." },
+  { "id": "c3", "name": "Carol Danvers", "phone": "345-678-9012", "email": "carol@avengers.org", "address": "Avengers Tower, NYC", "notes": "Goes by Captain Marvel. Available for galactic threats." }
+]
+                </code></pre>
+
+                <h4>3.2.4. Sub-module: Task Management (To-Do List)</h4>
+                <p>Helps users organize, track, and manage their tasks.</p>
+                <h5>3.2.4.1. Task Management Functionality</h5>
+                <ul>
+                    <li><strong>View Tasks:</strong> Display a list of tasks with description and status ("pending", "completed").</li>
+                    <li><strong>(POC Simulated) Add Task:</strong> Input field for task description; new tasks are "pending".</li>
+                    <li><strong>Mark Complete/Incomplete:</strong> Toggle task status.</li>
+                    <li><strong>Filter Tasks:</strong> View "All", "Pending", or "Completed".</li>
+                    <li><strong>(Optional for POC) Edit/Delete Task, Due Dates & Priority.</strong></li>
+                </ul>
+                <h5>3.2.4.2. Task Management Conceptual API (e.g., <code>pda.tasks</code>)</h5>
+                <ul>
+                    <li><code>setInitialTasks(tasksArray: Array&lt;Object&gt;)</code>: (POC specific) Loads initial mock task data.</li>
+                    <li><code>getAllTasks(): Array&lt;Object&gt;</code>: Returns all tasks.</li>
+                    <li><code>getTasksByStatus(status: string): Array&lt;Object&gt;</code>: Filters tasks by status.</li>
+                    <li><code>addTask(taskData: Object): void</code>: (POC) Adds a mock task.</li>
+                    <li><code>updateTaskStatus(taskId: string, status: string): void</code>: (POC) Changes task status.</li>
+                    <li><code>editTask(taskId: string, updatedData: Object): void</code>: (POC) Modifies task details.</li>
+                    <li><code>deleteTask(taskId: string): void</code>: (POC) Removes a task.</li>
+                    <li><code>onTaskUpdate(callback: Function)</code>: Callback for task changes.</li>
+                </ul>
+                <h5>3.2.4.3. Example Task Entries</h5>
+                <pre><code>
+[
+  { "id": "t1", "description": "Submit project proposal", "status": "pending", "dueDate": "2024-07-20", "priority": "high" },
+  { "id": "t2", "description": "Buy groceries for the week", "status": "pending", "dueDate": "2024-07-16", "priority": "medium" },
+  { "id": "t3", "description": "Schedule dentist appointment", "status": "completed", "dueDate": "2024-07-10", "priority": "medium" },
+  { "id": "t4", "description": "Read 'Atomic Habits'", "status": "pending", "dueDate": null, "priority": "low" }
+]
+                </code></pre>
+
+                <h4>3.2.5. Overall PDA Conceptual API Interactions (e.g., <code>pda</code> main module)</h4>
+                <ul>
+                    <li><code>pda.init(initialData: { calendar?: Array&lt;Object&gt;, contacts?: Array&lt;Object&gt;, tasks?: Array&lt;Object&gt; })</code>: Initializes all sub-modules.</li>
+                    <li><code>pda.navigateToSection(sectionName: string, params?: Object)</code>: Switches view between "Calendar", "Contacts", "Tasks".</li>
+                    <li><code>pda.getActiveSection(): string</code>: Returns current active section.</li>
+                </ul>
+
+                <h4>3.2.6. Limitations for HTML Proof-of-Concept (General to PDA)</h4>
+                <ul>
+                    <li><strong>Data Persistence:</strong> Data is ephemeral, lost on page refresh (unless LocalStorage is added).</li>
+                    <li><strong>Simplified UI/UX:</strong> Basic interactions, no rich editors or complex pickers.</li>
+                    <li><strong>No Backend Integration:</strong> Entirely client-side.</li>
+                    <li><strong>No Real-time Features/Notifications.</strong></li>
+                    <li><strong>Single Anonymous User Session.</strong></li>
+                    <li><strong>Minimal Error Handling.</strong></li>
+                    <li><strong>Basic Search/Filter.</strong></li>
+                </ul>
+            </div>
+
+            <!-- Paint Application -->
+            <div id="paint-spec">
+                <h3>3.3. Paint Application Module</h3>
+                <p>This document outlines the specifications for the Paint Application module. It covers its intended functionality, conceptual API interactions, limitations within an HTML proof-of-concept (POC), and a description of its hypothetical user interface.</p>
+                <h4>3.3.1. Overall Paint Application Functionality</h4>
+                <p>The Paint Application module provides a basic web-based digital drawing environment. Users can create simple graphical images using a selection of drawing tools, colors, and brush sizes on a digital canvas. The HTML POC will focus on core drawing mechanics, with save/load operations being simulated or highly simplified.</p>
+
+                <h4>3.3.2. Core Functionality Details</h4>
+                <h5>3.3.2.1. Canvas</h5>
+                <ul>
+                    <li><strong>Drawing Surface:</strong> A designated rectangular area on the web page (HTML5 canvas element).</li>
+                    <li><strong>Dimensions:</strong> Fixed for POC (e.g., 800px width, 600px height).</li>
+                    <li><strong>Background:</strong> Defaults to solid white.</li>
+                </ul>
+                <h5>3.3.2.2. Drawing Tools</h5>
+                <ul>
+                    <li><strong>Pencil/Brush:</strong> Freehand drawing with selected color/size.</li>
+                    <li><strong>Eraser:</strong> Removes content, drawing with background color. Uses selected brush size.</li>
+                    <li><strong>(Optional for POC) Line Tool:</strong> Draws straight lines.</li>
+                    <li><strong>(Optional for POC) Shape Tools (Rectangle, Circle):</strong> Outline or filled.</li>
+                </ul>
+                <h5>3.3.2.3. Color Selection</h5>
+                <ul>
+                    <li><strong>Palette:</strong> Predefined basic colors.</li>
+                    <li><strong>Selection:</strong> Click to set active drawing color.</li>
+                    <li><strong>Indicator:</strong> Visual display of current color.</li>
+                </ul>
+                <h5>3.3.2.4. Brush/Tool Size</h5>
+                <ul>
+                    <li><strong>Options:</strong> Predefined sizes (Small, Medium, Large) or a slider.</li>
+                    <li><strong>Indicator:</strong> Visual feedback of current size.</li>
+                </ul>
+                <h5>3.3.2.5. Actions</h5>
+                <ul>
+                    <li><strong>Clear Canvas:</strong> Resets canvas to blank state.</li>
+                    <li><strong>(POC Simulated) Save Image:</strong> Simulates saving. Could trigger <code>canvas.toDataURL()</code> and a mock download/notification.</li>
+                    <li><strong>(POC Simulated) Load Image:</strong> Simulates loading. Could "load" a predefined mock image or be out of scope.</li>
+                </ul>
+
+                <h4>3.3.3. Conceptual API Interactions (e.g., <code>paintApp</code> module)</h4>
+                <ul>
+                    <li><code>paintApp.init(canvasHTMLElement: HTMLCanvasElement, config?: Object)</code>: Initializes with a <code>&lt;canvas&gt;</code> element.</li>
+                    <li><code>paintApp.setTool(toolName: string)</code>: Sets active tool (e.g., "pencil", "eraser").</li>
+                    <li><code>paintApp.setColor(colorValue: string)</code>: Sets drawing color.</li>
+                    <li><code>paintApp.setBrushSize(size: number)</code>: Sets brush size in pixels.</li>
+                    <li><code>paintApp.clearCanvas()</code>: Clears the drawing area.</li>
+                    <li><code>paintApp.getCanvasAsDataURL(): string</code>: Returns Base64 data URL of canvas content.</li>
+                    <li><code>paintApp.saveImage()</code>: (POC) Triggers simulated save.</li>
+                    <li><code>paintApp.loadImage(imageDataUrl?: string)</code>: (POC) Simulates loading.</li>
+                    <li><code>paintApp.onStateChange(callback: Function)</code>: Callback for tool, color, or brush size changes.</li>
+                </ul>
+
+                <h4>3.3.4. Limitations for HTML Proof-of-Concept</h4>
+                <ul>
+                    <li><strong>Performance:</strong> Complex drawings may be slow.</li>
+                    <li><strong>Advanced Features Out of Scope:</strong> No layers, text tool, complex shapes/paths, selection tools, filters/effects, comprehensive undo/redo.</li>
+                    <li><strong>File Operations Simulated:</strong> "Save" is conceptual; "Load" might be omitted or use predefined images. No application-specific file formats.</li>
+                    <li><strong>Basic Touch Input:</strong> Optimization for touch (pinch-zoom, etc.) is out of scope.</li>
+                    <li><strong>UI Sophistication:</strong> Functional but basic UI.</li>
+                </ul>
+
+                <h4>3.3.5. Hypothetical Interface Description</h4>
+                <p>A single-page interface:</p>
+                <ul>
+                    <li><strong>Central Canvas Area:</strong> The main HTML5 canvas element.</li>
+                    <li><strong>Toolbar Panel (Left or Top):</strong>
+                        <ul>
+                            <li><strong>Tool Selection:</strong> Buttons for "Pencil", "Eraser" (Optional: "Line", "Rectangle", "Circle"). Active tool highlighted.</li>
+                            <li><strong>Color Palette:</strong> Grid of clickable color swatches; a larger swatch shows current color.</li>
+                            <li><strong>Brush Size Control:</strong> Buttons (S, M, L) or slider for thickness.</li>
+                            <li><strong>Action Buttons:</strong> "Clear", "Save (Sim)", "Load (Sim)".</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Example Interaction Flow:</strong></p>
+                <ol>
+                    <li>App loads: canvas white, default tool "Pencil", color "black", size "medium".</li>
+                    <li>User clicks "Blue" swatch. Current color updates.</li>
+                    <li>User drags mouse on canvas: blue line appears.</li>
+                    <li>User clicks "Eraser", selects "Large" size.</li>
+                    <li>User drags over blue line: line is erased.</li>
+                    <li>User clicks "Clear": canvas becomes white.</li>
+                    <li>User clicks "Save (Sim)": console message or alert "Image saved (simulated)".</li>
+                </ol>
+            </div>
+
+            <!-- Web Browser -->
+            <div id="web-browser-spec">
+                <h3>3.4. Web Browser Module</h3>
+                <p>This document outlines the specifications for the Web Browser module. It covers its intended functionality for a proof-of-concept (POC), including minimal HTML rendering, address bar, basic navigation, conceptual tabs, its conceptual API, supported "web standards" (greatly simplified for a POC), limitations, and a hypothetical example of its interface rendering a simple page.</p>
+                <h4>3.4.1. Overall Web Browser Functionality</h4>
+                <p>The Web Browser module simulates a very basic web browsing experience within the OS POC. It allows users to "navigate" to predefined local "HTML" content, renders a minimal subset of HTML tags, and conceptually manages multiple "web pages" using tabs. It is <strong>not</strong> designed to connect to the internet or render complex, modern websites. All "web content" is predefined and local to the simulation.</p>
+
+                <h4>3.4.2. Core Functionality Details</h4>
+                <h5>3.4.2.1. Address Bar</h5>
+                <ul>
+                    <li><strong>Input Field:</strong> Allows users to type "URLs."</li>
+                    <li><strong>POC URLs:</strong> Identifiers for locally stored/mocked HTML content (e.g., <code>"home.html"</code>).</li>
+                    <li><strong>Navigation Trigger:</strong> Enter key or "Go" button initiates loading.</li>
+                </ul>
+                <h5>3.4.2.2. Navigation Buttons</h5>
+                <ul>
+                    <li><strong>Go:</strong> Triggers navigation to URL in address bar.</li>
+                    <li><strong>Back:</strong> To previous page in tab history.</li>
+                    <li><strong>Forward:</strong> To next page in tab history.</li>
+                    <li><strong>Refresh:</strong> Reloads current page (re-renders mock HTML).</li>
+                </ul>
+                <h5>3.4.2.3. Rendering Area (Viewport)</h5>
+                <p>The primary section where "HTML" content is displayed.</p>
+                <h5>3.4.2.4. (Conceptual) Tabs</h5>
+                <ul>
+                    <li><strong>Multiple "Pages":</strong> UI to simulate multiple open pages.</li>
+                    <li><strong>Tab Management:</strong> Open new, close, switch tabs.</li>
+                    <li><strong>Independent History:</strong> Each tab maintains its own back/forward stack.</li>
+                </ul>
+                <h5>3.4.2.5. HTML Rendering (Highly Simplified)</h5>
+                <p>A very basic "renderer" interprets a small subset of HTML tags with minimal, hardcoded default styles.</p>
+
+                <h4>3.4.3. Conceptual API Interactions (e.g., <code>webBrowser</code> module)</h4>
+                <ul>
+                    <li><code>webBrowser.init(containerElement: HTMLElement, config?: Object)</code>: Initializes UI.</li>
+                    <li><code>webBrowser.setMockHTMLContent(url: string, htmlString: string)</code>: <strong>Crucial for POC.</strong> Defines "pages" by mapping a URL string to an HTML content string.</li>
+                    <li><code>webBrowser.setMockImageResource(url: string, actualImagePathOrDataURL: string)</code>: Registers images for <code>&lt;img&gt;</code> tags.</li>
+                    <li><code>webBrowser.openNewTab(url?: string, makeActive: boolean = true): string</code>: Creates new tab, returns conceptual <code>tabId</code>.</li>
+                    <li><code>webBrowser.closeTab(tabId: string)</code>: Closes specified tab.</li>
+                    <li><code>webBrowser.switchToTab(tabId: string)</code>: Activates specified tab.</li>
+                    <li><code>webBrowser.getActiveTabInfo(): { tabId: string, currentUrl: string, title: string }</code>: Info on active tab.</li>
+                    <li><code>webBrowser.navigateTo(url: string, tabId?: string)</code>: Loads content in specified/active tab.</li>
+                    <li><code>webBrowser.goBack(tabId?: string)</code>, <code>webBrowser.goForward(tabId?: string)</code>, <code>webBrowser.refresh(tabId?: string)</code>.</li>
+                    <li><code>webBrowser.on(eventName: string, callback: Function)</code>: For events like <code>pageLoadSuccess</code>, <code>titleChange</code>, <code>tabSwitched</code>.</li>
+                </ul>
+
+                <h4>3.4.4. Supported "Web Standards" & HTML Rendering (Simplified for POC)</h4>
+                <ul>
+                    <li><strong>HTML Parsing:</strong> Rudimentary (regex/string processing, not full DOM).
+                        <ul>
+                            <li>Supported Tags (Example): <code>&lt;h1&gt;-&lt;h3&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;a href&gt;</code>, <code>&lt;img src alt&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;span&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;title&gt;</code>.</li>
+                            <li>Unsupported tags ignored or plain text. Attributes other than specified are ignored.</li>
+                            <li>Ignores <code>&lt;!DOCTYPE&gt;</code>, <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code> as structural requirements.</li>
+                        </ul>
+                    </li>
+                    <li><strong>CSS Handling:</strong>
+                        <ul>
+                            <li>No external/embedded CSS (<code>&lt;link&gt;</code>, <code>&lt;style&gt;</code> ignored).</li>
+                            <li>No inline styles (<code>style="..."</code> ignored).</li>
+                            <li>Hardcoded default styles for supported tags only.</li>
+                        </ul>
+                    </li>
+                    <li><strong>JavaScript Execution: None.</strong> <code>&lt;script&gt;</code> tags and event attributes ignored. Content is static.</li>
+                </ul>
+
+                <h4>3.4.5. Limitations for HTML Proof-of-Concept</h4>
+                <ul>
+                    <li><strong>No Internet Connectivity.</strong> All content is local mock data.</li>
+                    <li><strong>Extremely Limited HTML/CSS Support.</strong> No complex layouts, forms, tables, etc.</li>
+                    <li><strong>No JavaScript Execution.</strong> Pages are static.</li>
+                    <li><strong>No Multimedia, Cookies, Local Storage, Sessions.</strong></li>
+                    <li><strong>Security features irrelevant/not implemented.</strong></li>
+                    <li><strong>Performance:</strong> Rudimentary parsing; large content might be slow.</li>
+                    <li><strong>Simplified Tab Functionality.</strong> No advanced tab features.</li>
+                    <li><strong>No Browser Extensions, DevTools, Downloads, Printing.</strong></li>
+                </ul>
+
+                <h4>3.4.6. Hypothetical Interface and Rendering Example</h4>
+                <h5>Browser Interface Layout:</h5>
+                <ul>
+                    <li><strong>Top Row (Tab Bar):</strong> Tab buttons (title/URL), <code>[+]</code> button for new tab, <code>[x]</code> on each tab to close.</li>
+                    <li><strong>Second Row (Controls):</strong> <code>[&lt; Back]</code> <code>[&gt; Forward]</code> <code>[Refresh]</code> buttons. Address Bar <code>[input type="text"]</code>. <code>[Go]</code> button.</li>
+                    <li><strong>Main Area (Viewport):</strong> Large <code>div</code> for rendered content.</li>
+                </ul>
+                <h5>Rendering Example:</h5>
+                <p>If <code>webBrowser.setMockHTMLContent("mypage.html", pageHtml)</code> was called with:</p>
+                <pre><code class="language-html">
+&lt;title&gt;My Test Page&lt;/title&gt;
+&lt;h1&gt;Welcome to My Page&lt;/h1&gt;
+&lt;p&gt;This is &lt;b&gt;bold&lt;/b&gt; text and a &lt;a href="another.html"&gt;link to another page&lt;/a&gt;.&lt;/p&gt;
+&lt;img src="test_image.png" alt="Test Image Alt Text"&gt;
+&lt;hr&gt;
+&lt;p&gt;End of page.&lt;/p&gt;
+                </code></pre>
+                <p>And a mock image was set for <code>test_image.png</code>.</p>
+                <p><strong>Expected Output in POC Browser:</strong></p>
+                <ul>
+                    <li><strong>Tab Title:</strong> "My Test Page"</li>
+                    <li><strong>Address Bar:</strong> <code>mypage.html</code></li>
+                    <li><strong>Viewport Rendering:</strong>
+                        <ul>
+                            <li><strong>Welcome to My Page</strong> (large, bold text)</li>
+                            <li>This is bold text and a <span style="text-decoration:underline; color:blue;">link to another page</span>. (<code>&lt;b&gt;</code> tag likely ignored unless added to supported list. Link is styled.)</li>
+                            <li>[Image displayed here, or alt text if failed].</li>
+                            <li>--- (Horizontal line) ---</li>
+                            <li>End of page.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- App Store -->
+            <div id="app-store-spec">
+                <h3>3.5. App Store (Conceptual) Module</h3>
+                <p>This document outlines the specifications for the conceptual App Store module. It details its intended functionality within an HTML proof-of-concept (POC), including browsing mock applications, conceptual installation/uninstallation processes, its conceptual API, the definition of an "app package" for the POC, limitations, and a hypothetical example of its interface and app listings.</p>
+                <h4>3.5.1. Overall App Store Functionality</h4>
+                <p>The App Store module simulates a marketplace for "applications" within the OS POC. It enables users to browse a curated list of available mock applications, view their details, and conceptually "install" or "uninstall" them. This module does <strong>not</strong> connect to any real app repository, nor does it manage or execute actual software packages. Its primary purpose is to demonstrate the concept of application management within the simulated OS.</p>
+
+                <h4>3.5.2. Core Functionality Details</h4>
+                <h5>3.5.2.1. App Listings (Catalogue View)</h5>
+                <ul>
+                    <li><strong>Display:</strong> Presents "applications" in a user-friendly format (grid/list of cards).</li>
+                    <li><strong>Information per App:</strong> Name, icon, brief description, status/action button ("Install", "Uninstall").</li>
+                </ul>
+                <h5>3.5.2.2. App Discovery (Basic)</h5>
+                <ul>
+                    <li><strong>(Optional for POC) Categories:</strong> Filter by predefined categories (Utilities, Games).</li>
+                    <li><strong>(Optional for POC) Search:</strong> Basic client-side search by name.</li>
+                </ul>
+                <h5>3.5.2.3. (Conceptual) App Installation</h5>
+                <ul>
+                    <li><strong>Trigger:</strong> User clicks "Install" button.</li>
+                    <li><strong>POC Simulation:</strong>
+                        <ol>
+                            <li>App Store updates app status internally ("Installing" -> "Installed").</li>
+                            <li>Emits <code>onAppInstalled</code> event to notify OS Core.</li>
+                            <li>OS Core conceptually adds app to its launcher (using <code>launchConfig</code> from app package).</li>
+                            <li>UI updates ("Install" button changes to "Uninstall" or "Open").</li>
+                        </ol>
+                    </li>
+                    <li><strong>No Actual Download/Execution.</strong></li>
+                </ul>
+                <h5>3.5.2.4. (Conceptual) App Uninstallation</h5>
+                <ul>
+                    <li><strong>Trigger:</strong> User clicks "Uninstall" for an "installed" app.</li>
+                    <li><strong>POC Simulation:</strong>
+                        <ol>
+                            <li>App Store updates status ("Uninstalling" -> "Not Installed").</li>
+                            <li>Emits <code>onAppUninstalled</code> event.</li>
+                            <li>OS Core conceptually removes app from its lists.</li>
+                            <li>UI updates (button changes to "Install").</li>
+                        </ol>
+                    </li>
+                </ul>
+                <h5>3.5.2.5. App Details View</h5>
+                <ul>
+                    <li><strong>Access:</strong> Click app listing (not install button).</li>
+                    <li><strong>Content:</strong> App Name, Icon (larger), Full Description, Conceptual metadata (Version, Publisher), Conceptual Screenshots, Install/Uninstall button, Back button.</li>
+                </ul>
+
+                <h4>3.5.3. Conceptual API Interactions (e.g., <code>appStore</code> module)</h4>
+                <ul>
+                    <li><code>appStore.init(config: { availableApps: Array&lt;AppPackage&gt; })</code>: Initializes with predefined apps.</li>
+                    <li><code>appStore.listAvailableApps(filter?: { category?: string, searchTerm?: string }): Array&lt;AppPackage&gt;</code>: Returns app list, optionally filtered.</li>
+                    <li><code>appStore.getAppDetails(appId: string): AppPackage | null</code>: Retrieves full package for <code>appId</code>.</li>
+                    <li><code>appStore.installApp(appId: string): Promise&lt;{ success: boolean, message?: string }&gt;</code>: Simulates install, emits <code>appInstalled</code>.</li>
+                    <li><code>appStore.uninstallApp(appId: string): Promise&lt;{ success: boolean, message?: string }&gt;</code>: Simulates uninstall, emits <code>appUninstalled</code>.</li>
+                    <li><code>appStore.getAppStatus(appId: string): 'Not Installed' | 'Installed' | ...</code>: Returns current status.</li>
+                    <li><code>appStore.on(eventName: 'appInstalled' | 'appUninstalled' | ..., callback: Function)</code>: Registers callbacks.</li>
+                    <li><code>appStore.registerApps(appDefinitions: Array&lt;AppPackage&gt;)</code>: Adds more apps post-init.</li>
+                </ul>
+
+                <h4>3.5.4. "App Package" Definition (Simplified for POC)</h4>
+                <p>A JavaScript object describing a mock application. Contains metadata and configuration, <strong>not</strong> executable code.</p>
+                <pre><code>
+{
+  id: "unique_app_id_string",         // e.g., "simple_text_editor_v1"
+  name: "Application Name",           // e.g., "Simple Text Editor"
+  version: "1.0.0",
+  icon: "path/to/icon.png",
+  description_short: "Brief summary.",
+  description_full: "Detailed explanation.",
+  publisher: "App Creator Name",
+  releaseDate: "YYYY-MM-DD",
+  category: "Utilities",
+  screenshots: ["path/to/ss1.png"],
+  // Crucial for POC: How OS should "launch" this app
+  launchConfig: {
+    moduleToLoad: "TextViewerModule", // Identifies an existing OS POC module
+    windowTitle: "My Text File",
+    initialData: { content: "" }
+  },
+  status: "Not Installed"
+}
+                </code></pre>
+                <p>The <code>launchConfig</code> tells the OS simulation which pre-existing UI module to instantiate when the "app" is "opened."</p>
+
+                <h4>3.5.5. Limitations for HTML Proof-of-Concept</h4>
+                <ul>
+                    <li><strong>Simulation Only:</strong> Installation/uninstallation are conceptual state changes.</li>
+                    <li><strong>No Real Software:</strong> Apps are metadata objects.</li>
+                    <li><strong>Predefined Catalogue.</strong> No dynamic discovery from external sources.</li>
+                    <li><strong>No Updates/Versioning, Financial Transactions, User Accounts.</strong></li>
+                    <li><strong>Security Irrelevant.</strong> No code downloaded/run.</li>
+                    <li><strong>Basic Discovery (Search/Categories).</strong></li>
+                    <li><strong>No Dependencies, User Reviews/Ratings.</strong></li>
+                </ul>
+
+                <h4>3.5.6. Hypothetical Interface and App Listing Example</h4>
+                <h5>App Store Interface Layout:</h5>
+                <ul>
+                    <li><strong>Header:</strong> Title, Optional Search Bar.</li>
+                    <li><strong>Sidebar (Optional):</strong> Categories list.</li>
+                    <li><strong>Main Content Area (Catalogue View):</strong> Grid of "App Cards."</li>
+                </ul>
+                <h5>Example App Card:</h5>
+                <pre><code>
++--------------------------------------+
+| [AppIcon.png]  **Awesome App v1.2**  |
+|                                      |
+| Category: Productivity               |
+| Publisher: POC Creators              |
+|                                      |
+| A brief description...               |
+|                                      |
+| [ View Details ]  [ Install ]        |
++--------------------------------------+
+                </code></pre>
+                <h5>App Details View (Example):</h5>
+                <pre><code>
++----------------------------------------------------+
+| **Awesome App v1.2**                               |
+| [Back to List]                                     |
+|----------------------------------------------------|
+| [LargeAppIcon.png]  |  Full description...         |
+|                     |                              |
+| Publisher: POC Creators   Version: 1.2             |
+|----------------------------------------------------|
+| Screenshots: [ss1.png] [ss2.png]                   |
+|----------------------------------------------------|
+|                      [ Install App ]               |
++----------------------------------------------------+
+                </code></pre>
+                <p><strong>Interaction Flow Example:</strong> User clicks "Install", button changes, <code>installApp</code> API called, <code>appInstalled</code> event fired, OS adds app to launcher.</p>
+            </div>
+        </div>
+
+        <div class="section" id="3d-framework">
+            <h2>4. 3D Animation Framework</h2>
+            <p>The 3D Animation Framework is a core component of Belu OS, responsible for rendering the main user interface, including the desktop environment, application windows, icons, and dynamic visual effects. Its primary purpose is to create an engaging and intuitive user experience that aligns with the OS's innovative design philosophy.</p>
+            <h4>4.1. Conceptual Basis</h4>
+            <ul>
+                <li><strong>Technology:</strong> The framework will be conceptually based on WebGL, likely utilizing a higher-level library such as Three.js for easier scene management, object creation, and animation.</li>
+                <li><strong>Rendering Target:</strong> It will render to a full-screen HTML5 canvas element that serves as the primary display area for Belu OS.</li>
+                <li><strong>Integration:</strong> OS Core will manage the main 3D scene. Application modules will request UI elements (like windows or animated notifications) to be rendered within this 3D space.</li>
+            </ul>
+            <h4>4.2. Example Animation Elements and UI Concepts</h4>
+            <ul>
+                <li><strong>3D Desktop Environment:</strong> A subtle, dynamic background, possibly with depth and parallax effects. Icons might be 3D objects or 2D planes in 3D space.</li>
+                <li><strong>Window Management:</strong> Application windows could be rendered as 3D planes or objects. Opening, closing, minimizing, and maximizing windows would feature smooth 3D transitions (e.g., windows flying in/out, flipping, or scaling).</li>
+                <li><strong>Animated Icons:</strong> Icons could have subtle hover animations or react to user interaction with physics-based movements.</li>
+                <li><strong>Notifications & Alerts:</strong> These could appear as 3D elements that emerge, pulse, or slide into view.</li>
+                <li><strong>Transitions:</strong> Switching between applications or views within an application could involve 3D scene transitions.</li>
+                <li><strong>Interactive Elements:</strong> Buttons, sliders, and other UI controls might have 3D characteristics and animated feedback.</li>
+            </ul>
+            <h4>4.3. Proof-of-Concept (POC) Detail Level</h4>
+            <ul>
+                <li><strong>Basic Scene Setup:</strong> A simple 3D scene with a camera and basic lighting.</li>
+                <li><strong>Window Representation:</strong> Application windows will likely be represented as textured 2D planes in the 3D space to simplify interaction and content display (which will be HTML content overlaid or texture-mapped).</li>
+                <li><strong>Simple Animations:</strong> Focus on basic animated transitions for window open/close actions (e.g., fade-in/scale-up).</li>
+                <li><strong>Placeholders:</strong> Complex 3D models or detailed environments are out of scope for the initial POC. Simple geometric shapes or placeholders will be used for icons or 3D elements.</li>
+                <li><strong>Performance:</strong> Animations will be kept simple to ensure reasonable performance, as complex 3D rendering can be resource-intensive.</li>
+                <li><strong>API Stubs:</strong> Conceptual APIs for modules to request 3D UI elements or animations will be defined, but the actual 3D rendering capabilities will be minimal in the POC. For instance, an app might request a "fancy notification," but the POC might only render a simple 2D overlay with a basic animation.</li>
+            </ul>
+            <p>The goal for the POC is to establish the architectural hooks for the 3D framework and demonstrate a few key animated UI interactions, rather than building a fully immersive 3D environment.</p>
+        </div>
+
+        <div class="section" id="security">
+            <h2>5. Security Considerations</h2>
+            <p>While Belu OS is a proof-of-concept running entirely client-side with mock data and no real internet connectivity for its core operations (like file system or app installation), several conceptual security considerations are relevant, especially if the project were to evolve.</p>
+            <h4>5.1. Current POC Context (Simulated Environment)</h4>
+            <ul>
+                <li><strong>Data Isolation:</strong> Each module conceptually manages its own data (JavaScript objects). There's no explicit sandboxing in the POC, but modules do not directly access each other's internal state except through defined conceptual APIs.</li>
+                <li><strong>No Server-Side Interaction:</strong> The core OS simulation does not interact with external servers for its functionality, minimizing exposure to common web vulnerabilities like XSS or CSRF from a server-side perspective.</li>
+                <li><strong>Mock "Web Browser" Security:</strong> The internal Web Browser module is designed to render only predefined local HTML content and explicitly disallows JavaScript execution within displayed pages. This inherently avoids security risks associated with browsing malicious websites. It does not connect to the internet.</li>
+                <li><strong>Mock "App Store" Security:</strong> "Apps" are conceptual and defined by metadata. No code is downloaded or executed during "installation," eliminating risks of malware from apps.</li>
+            </ul>
+            <h4>5.2. Conceptual Future Considerations (If Evolved)</h4>
+            <p>If Belu OS were to evolve into a system that interacts with real user data or external services, the following would become critical:</p>
+            <ul>
+                <li><strong>Sandboxing:</strong> True isolation for applications would be necessary, potentially using iframes with `sandbox` attributes, Web Workers for background tasks, or more advanced techniques if browser technology evolves to support stronger client-side sandboxing for OS-like environments.</li>
+                <li><strong>Permissions Model:</strong> A clear permissions system would be needed for apps to request access to conceptual resources (e.g., "contacts data," "file system access") managed by the OS.</li>
+                <li><strong>Secure Data Storage:</strong> If handling real user data, using browser storage mechanisms like IndexedDB would require careful consideration of data encryption (especially for sensitive data) and protection against XSS that could exfiltrate this data.</li>
+                <li><strong>Inter-Module Communication:</strong> Secure channels for communication between modules would be essential, preventing unauthorized access or manipulation of messages.</li>
+                <li><strong>Input Sanitization:</strong> If any module processes external input (e.g., if the Web Browser could load content from user-provided URLs, or if apps could receive data from external sources), rigorous input sanitization would be needed to prevent injection attacks.</li>
+                <li><strong>Content Security Policy (CSP):</strong> Implementing a strong CSP would be crucial to mitigate XSS risks if dynamic content loading were ever introduced.</li>
+                <li><strong>Update Mechanism:</strong> A secure way to update the OS components and "apps" would be necessary if it were a deployed system.</li>
+            </ul>
+            <h4>5.3. Focus for the POC</h4>
+            <p>For the current HTML-based POC, the security focus is primarily on:
+            <ul>
+                <li>Ensuring that the conceptual APIs between modules do not inadvertently allow for data corruption within the simulation.</li>
+                <li>Maintaining the principle that mock applications or mock web content cannot execute arbitrary JavaScript within the OS's main context or affect other modules beyond their defined interactions.</li>
+                <li>Clearly documenting that the current system is a simulation and not designed for handling sensitive information or production use.</li>
+            </ul>
+            <p>The educational aspect of Belu OS could also include modules or demonstrations that teach users about these web security principles in a simplified, interactive way.</p>
+        </div>
+
+        <div class="section" id="limitations-future">
+            <h2>6. Limitations and Future Directions</h2>
+            <h4>6.1. Current Limitations of the HTML-Based POC</h4>
+            <ul>
+                <li><strong>No True OS Capabilities:</strong> Belu OS is a simulation within a web browser. It does not have direct hardware access, true process management, kernel-level operations, or system-level file management. All functionalities are high-level simulations using JavaScript and browser APIs.</li>
+                <li><strong>Performance Constraints:</strong> Complex 3D animations, rendering many objects, or handling large mock datasets entirely on the client-side can lead to performance bottlenecks, varying significantly across different browsers and user hardware.</li>
+                <li><strong>Data Persistence:</strong> All "data" (mock files, PDA entries, app statuses) is ephemeral and stored in JavaScript memory, lost when the browser tab is closed or refreshed. Implementing persistence (e.g., via LocalStorage or IndexedDB) adds complexity and has storage limits.</li>
+                <li><strong>Single-Threaded Nature (Mostly):</strong> While Web Workers can be used for background tasks, core UI interactions and much of JavaScript logic run in a single thread, which can lead to UI freezes if long-running operations are not handled carefully.</li>
+                <li><strong>Browser Sandbox Restrictions:</strong> The entire OS operates within the browser's security sandbox, limiting its ability to interact with the host system or other applications outside the browser.</li>
+                <li><strong>Simplified Modules:</strong> All included applications (File Explorer, PDA, Paint, etc.) are highly simplified versions of their real-world counterparts, lacking most advanced features.</li>
+                <li><strong>Network Dependency for Initial Load:</strong> As a web application, it needs to be loaded from a web server (even if local).</li>
+                <li><strong>Limited "App" Ecosystem:</strong> The "App Store" and "Web Browser" deal with entirely mock/predefined content and applications. There's no mechanism for running arbitrary, externally developed code.</li>
+            </ul>
+            <h4>6.2. Future Directions and Potential Enhancements</h4>
+            <ul>
+                <li><strong>Enhanced Persistence:</strong> Integrate browser storage (LocalStorage for simple data, IndexedDB for more complex structures) to allow user data and OS state to persist across sessions.</li>
+                <li><strong>Web Workers for True Parallelism:</strong> Offload more tasks to Web Workers to improve UI responsiveness and simulate multitasking more effectively.</li>
+                <li><strong>Service Workers:</strong> Explore Service Workers for caching strategies (making the OS load faster after the first time) and potentially enabling some offline capabilities (though full offline OS functionality is a huge leap).</li>
+                <li><strong>Progressive Web App (PWA) Features:</strong> Implement PWA standards to allow "installation" on the user's device (add to home screen) and a more app-like feel.</li>
+                <li><strong>Inter-Tab/Window Communication:</strong> For a multi-window OS simulation, explore robust mechanisms for communication if different OS "windows" were ever implemented as separate browser windows/tabs (e.g., using `BroadcastChannel` API).
+                <li><strong>More Sophisticated 3D Interactions:</strong> Develop more complex 3D models, richer animations, and physics-based interactions within the UI.</li>
+                <li><strong>Expanded Module Functionality:</strong> Gradually add more features to the existing application modules to make them more capable.
+                    <ul>
+                        <li>Example: Real `canvas.toDataURL()` saving for Paint, basic text editing features, richer PDA functionalities.</li>
+                    </ul>
+                </li>
+                <li><strong>User Customization:</strong> Allow users to customize aspects of the OS appearance (themes, desktop background in 3D space) or layout.</li>
+                <li><strong>Educational Modules:</strong> Develop specific modules or interactive tutorials that leverage the OS environment to teach concepts related to computer science, web technologies, or 3D graphics.</li>
+                <li><strong>Framework for External "Apps":</strong> Conceptually define a stricter API and manifest format that could (in a more advanced version) allow for loading "apps" defined in separate, sandboxed JavaScript bundles, though this presents significant security and complexity challenges.</li>
+                <li><strong>Accessibility (A11Y):</strong> While challenging for a heavily 3D/graphical interface, explore ways to provide alternative interactions or information for users with disabilities.</li>
+                <li><strong>Touch Interface Optimization:</strong> Improve usability on touch-based devices.</li>
+            </ul>
+            <p>Belu OS, as a POC, serves as a foundational exploration. Future development would depend on specific goals, whether focusing on its educational potential, its unique UI/UX paradigms, or pushing the boundaries of what can be simulated in a web browser environment.</p>
+        </div>
+
+    </div>
+</body>
+</html>
